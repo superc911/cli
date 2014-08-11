@@ -547,7 +547,7 @@ var _ = Describe("Service Plans", func() {
 			})
 		})
 
-		Context("setting visibility to All", func() {
+		Context("when enabling access", func() {
 			Context("for a public plan", func() {
 				It("returns All", func() {
 					originalAccessValue, err := actor.UpdatePlanAndOrgForService("my-mixed-service", "public-service-plan", "org-1", true)
@@ -562,6 +562,41 @@ var _ = Describe("Service Plans", func() {
 					Expect(servicePlanVisibilityRepo.CreateCallCount()).To(Equal(0))
 					Expect(err).NotTo(HaveOccurred())
 					Expect(originalAccessValue).To(Equal(actors.All))
+				})
+			})
+
+			FContext("for a limited plan", func() {
+				BeforeEach(func() {
+					servicePlanVisibilityRepo.ListReturns(
+						[]models.ServicePlanVisibilityFields{limitedServicePlanVisibilityFields}, nil)
+
+				})
+				It("returns Limited", func() {
+					originalAccessValue, err := actor.UpdatePlanAndOrgForService("my-mixed-service", "limited-service-plan", "org-1", true)
+
+					Expect(err).NotTo(HaveOccurred())
+					Expect(originalAccessValue).To(Equal(actors.Limited))
+				})
+
+				Context("when the org already has access", func() {
+					It("does not try and create the visibility", func() {
+						originalAccessValue, err := actor.UpdatePlanAndOrgForService("my-mixed-service", "limited-service-plan", "org-1", true)
+
+						Expect(servicePlanVisibilityRepo.CreateCallCount()).To(Equal(0))
+						Expect(err).NotTo(HaveOccurred())
+						Expect(originalAccessValue).To(Equal(actors.Limited))
+					})
+				})
+				Context("when the org does not have access", func() {
+					It("creates the visibility", func() {
+						orgRepo.FindByNameOrganization = org2
+
+						originalAccessValue, err := actor.UpdatePlanAndOrgForService("my-mixed-service", "limited-service-plan", "org-2", true)
+
+						Expect(servicePlanVisibilityRepo.CreateCallCount()).To(Equal(1))
+						Expect(err).NotTo(HaveOccurred())
+						Expect(originalAccessValue).To(Equal(actors.Limited))
+					})
 				})
 			})
 
