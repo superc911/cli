@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 (
   set -e
@@ -16,6 +16,8 @@
   if [[ $# == 1 && $1 == "GoCD" ]] ; then
     echo -e "\nSetting up GoCD Environment..."
     ci/scripts/setup-gocd-env
+    echo `which godep`
+    export PATH=$PATH:$GOPATH/bin
   fi
 
   bin/generate-language-resources
