@@ -65,6 +65,11 @@
   echo -e "\n PWD: $PWD"
   echo -e "\n `ls $PWD`"
   echo -e "\n `ls $PWD/cf`"
+
+  if [[ ! -z $GO_CD ]] ; then
+    export GOPATH=${TMPDIR}:$GOPATH
+  fi
+
   ginkgo -r $@
 
   echo -e "\n Vetting packages for potential issues..."
