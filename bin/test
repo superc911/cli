@@ -12,6 +12,8 @@
   }
 
   trap printStatus EXIT
+  echo "GOPATH: $GOPATH"
+  exit 1
 
   if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
