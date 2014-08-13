@@ -17,6 +17,7 @@
     echo -e "\nSetting up GoCD Environment..."
     export PATH=$GOPATH/bin:$PATH
     export CLI_ROOT=$GOPATH/src/github.com/cloudfoundry/cli/
+    echo `ls $PWD`
     echo `ls $PWD/src`
     echo `ls $PWD/pkg`
     exit 1
