@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-export PATH=$PATH:$GOPATH/bin
-
 go get -u github.com/tools/godep
 
 echo $PATH
