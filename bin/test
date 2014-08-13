@@ -17,15 +17,8 @@
     echo -e "\nSetting up GoCD Environment..."
     export PATH=$GOPATH/bin:$PATH
     export CLI_ROOT=${TMPDIR}/src/github.com/cloudfoundry/cli/
-    echo $PWD
-    echo `ls $PWD`
-    echo `ls $PWD/src`
-    echo `ls $PWD/pkg`
     ci/scripts/setup-gocd-env
     pushd $CLI_ROOT
-    echo $PWD
-    echo `ls $GOPATH/src`
-    echo `ls $GOPATH/pkg`
   fi
 
   bin/generate-language-resources
@@ -62,10 +55,6 @@
 
   echo -e "\n Testing packages..."
 
-  echo -e "\n PWD: $PWD"
-  echo -e "\n `ls $PWD`"
-  echo -e "\n `ls $PWD/cf`"
-
   if [[ ! -z $GO_CD ]] ; then
     export GOPATH=${TMPDIR}:$GOPATH
   fi
@@ -80,5 +69,7 @@
   done
 
   echo -e "\n Running build script to confirm everything compiles..."
+  echo "$PWD"
+  cat bin/build
   bin/build
 )
