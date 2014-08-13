@@ -15,9 +15,9 @@
 
   if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
+    export PATH=$PATH:$GOPATH/bin
     ci/scripts/setup-gocd-env
     echo `which godep`
-    export PATH=$PATH:$GOPATH/bin
   fi
 
   bin/generate-language-resources
@@ -55,6 +55,10 @@
   go fmt ./...
 
   echo -e "\n Testing packages..."
+
+  echo -e "\n PWD: $PWD"
+  echo -e "\n `ls $PWD`"
+  echo -e "\n `ls $PWD/cf`"
   ginkgo -r $@
 
   echo -e "\n Vetting packages for potential issues..."
