@@ -12,13 +12,11 @@
   }
 
   trap printStatus EXIT
-  echo "GOPATH: $GOPATH"
-  exit 1
 
   if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
     export PATH=$GOPATH/bin:$PATH
-    export CLI_ROOT=$GOPATH/src/github.com/cloudfoundry/cli/
+    export CLI_ROOT=${TMPDIR}/src/github.com/cloudfoundry/cli/
     echo $PWD
     echo `ls $PWD`
     echo `ls $PWD/src`
