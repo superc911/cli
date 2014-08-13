@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-go get -u github.com/tools/godep
+echo -e "\n Rsyncing CLI to correct path..."
+mkdir -p $CLI_ROOT 
+rsyc -a . $CLI_ROOT
 
-echo $PATH
-echo `which ls`
-echo `which godep`
+go get -u github.com/tools/godep
