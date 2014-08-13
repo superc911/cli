@@ -15,20 +15,19 @@
 
   if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
-    export PATH=$PATH:$GOPATH/bin
+    export PATH=$GOPATH/bin:$PATH
+    export CLI_ROOT=$GOPATH/src/github.com/cloudfoundry/cli/
     ci/scripts/setup-gocd-env
-    echo `which godep`
+    pushd $CLI_ROOT
   fi
 
   bin/generate-language-resources
 
   GODEP=`which godep`
-  echo "After which"
   if [[ -z $GODEP ]] ; then
     echo "godep is not installed. Run 'go get github.com/tools/godep'"
     exit 1
   fi
-  echo "After if"
 
   echo -e "\n Cleaning build artifacts..."
 
