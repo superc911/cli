@@ -23,6 +23,9 @@
     echo `ls $PWD/pkg`
     ci/scripts/setup-gocd-env
     pushd $CLI_ROOT
+    echo $PWD
+    echo `ls $GOPATH/src`
+    echo `ls $GOPATH/pkg`
   fi
 
   bin/generate-language-resources
