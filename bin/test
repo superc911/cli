@@ -22,7 +22,7 @@
     echo `ls $PWD/src`
     echo `ls $PWD/pkg`
     ci/scripts/setup-gocd-env
-    #pushd $CLI_ROOT
+    pushd $CLI_ROOT
   fi
 
   bin/generate-language-resources
