@@ -3,7 +3,6 @@
 echo -e "\n Rsyncing CLI to correct path..."
 rm -Rf $CLI_ROOT
 mkdir -p $CLI_ROOT
-#rsync -avn $PWD/ $CLI_ROOT/
-#cp -vR $GOPATH/ $CLI_ROOT
+rsync -av $GOPATH/ $CLI_ROOT
 
 go get -u github.com/tools/godep
