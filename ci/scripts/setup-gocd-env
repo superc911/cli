@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 
 PATH=$PATH:$GOPATH/bin
+
+go get -u github.com/tools/godep
+
+echo $PATH
+echo `which ls`
+echo `which godep`
