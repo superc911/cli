@@ -13,7 +13,7 @@
 
   trap printStatus EXIT
 
-  if [[ $# == 1 && $1 == "GoCD" ]] ; then
+  if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
     ci/scripts/setup-gocd-env
     echo `which godep`
