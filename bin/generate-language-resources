@@ -8,3 +8,4 @@ echo `ls $GOPATH/bin`
 echo `which go-bindata`
 echo " Generating i18n Resource file"
 $GOPATH/bin/go-bindata -pkg resources -ignore ".go" -o cf/resources/i18n_resources.go cf/i18n/resources/... cf/i18n/test_fixtures/...
+echo "After go-bindata"
