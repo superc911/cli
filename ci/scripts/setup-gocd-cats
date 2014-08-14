@@ -6,8 +6,16 @@ mkdir out
 curl "http://go-cli.s3.amazonaws.com/builds/cf-linux-amd64" > out/cf
 chmod +x out/cf
 
+cp $BOSH_LITE_PRIVATE_KEY $TMPDIR/id_rsa_bosh
+chmod 0600 $TMPDIR/id_rsa_bosh
+OLD_KEY=$BOSH_LITE_PRIVATE_KEY
+BOSH_LITE_PRIVATE_KEY=$TMPDIR/id_rsa_bosh
+
 eval `ssh-agent -s`
 trap "kill $SSH_AGENT_PID" EXIT
 ssh-add $BOSH_LITE_PRIVATE_KEY
 
 ./setup-cats.rb
+
+rm $BOSH_LITE_PRIVATE_KEY
+BOSH_LITE_PRIVATE_KEY=$OLD_KEY
