@@ -16,9 +16,7 @@
   if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
     export PATH=$GOPATH/bin:$PATH
-    export CLI_ROOT=${TMPDIR}/src/github.com/cloudfoundry/cli/
     ci/scripts/setup-gocd-env
-    pushd $CLI_ROOT
   fi
 
   bin/generate-language-resources
@@ -54,10 +52,6 @@
   go fmt ./...
 
   echo -e "\n Testing packages..."
-
-  if [[ ! -z $GO_CD ]] ; then
-    export GOPATH=${TMPDIR}:$GOPATH
-  fi
 
   ginkgo -r $@
 
