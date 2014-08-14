@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+echo "{ \"apps_domain\": `cat api-address`.xip.io, \"persistent_app_host\": \"persistent-app-$1\" }" > $GOPATH/config.json
