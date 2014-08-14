@@ -69,7 +69,5 @@
   done
 
   echo -e "\n Running build script to confirm everything compiles..."
-  echo "$PWD"
-  cat bin/build
   bin/build
 )
