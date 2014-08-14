@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 
-echo $PWD
-echo `ls`
 export BOSH_LITE_HOSTNAME=ubuntu@`cat api-address`
 export CC_HOSTNAME=`cat api-address`.xip.io
 mkdir out
 curl "http://go-cli.s3.amazonaws.com/builds/cf-linux-amd64" > out/cf
 chmod +x out/cf
-echo `env`
-exit 1
