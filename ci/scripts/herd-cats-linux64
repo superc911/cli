@@ -8,6 +8,10 @@ export CF_RAISE_ERROR_ON_WARNINGS=true
 
 rm -rf $GOPATH/pkg/*
 
+echo `ls $GOPATH`
+echo $PWD
+echo `ls $PWD`
+
 go get -d github.com/cloudfoundry/cf-acceptance-tests/
 echo `ls $GOPATH`
 echo $PWD
