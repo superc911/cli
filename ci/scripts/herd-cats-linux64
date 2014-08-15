@@ -6,7 +6,12 @@ set -e
 rm -rf $GOPATH/pkg/*
 
 go get -d github.com/cloudfoundry/cf-acceptance-tests/
+echo `ls $GOPATH`
+echo $PWD
+echo `ls $PWD`
 export CATSPATH=$GOPATH/src/github.com/cloudfoundry/cf-acceptance-tests
+echo $CATSPATH
+echo `ls $CATSPATH`
 
 rm -f $CATSPATH/gcf
 curl https://s3.amazonaws.com/go-cli/builds/cf-linux-amd64 > $CATSPATH/cf
