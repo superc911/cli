@@ -4,7 +4,8 @@ set -e
 
 export CF_RAISE_ERROR_ON_WARNINGS=true
 
-export GOPATH=~/go
+#export GOPATH=~/go
+
 rm -rf $GOPATH/pkg/*
 
 go get -d github.com/cloudfoundry/cf-acceptance-tests/

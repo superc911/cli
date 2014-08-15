@@ -2,26 +2,26 @@
 
 function cleanup {
   kill $SSH_AGENT_PID
-  rm $BOSH_LITE_PRIVATE_KEY
-  BOSH_LITE_PRIVATE_KEY=$OLD_KEY
+  #rm $BOSH_LITE_PRIVATE_KEY
+  #BOSH_LITE_PRIVATE_KEY=$OLD_KEY
 }
 
 trap cleanup EXIT
 
 
-export BOSH_LITE_HOSTNAME=ubuntu@`cat api-address`
-export CC_HOSTNAME=`cat api-address`.xip.io
+#export BOSH_LITE_HOSTNAME=ubuntu@`cat api-address`
+#export CC_HOSTNAME=`cat api-address`.xip.io
 mkdir out
 curl "http://go-cli.s3.amazonaws.com/builds/cf-linux-amd64" > out/cf
 chmod +x out/cf
 
-cp $BOSH_LITE_PRIVATE_KEY $TMPDIR/id_rsa_bosh
-chmod 0600 $TMPDIR/id_rsa_bosh
-OLD_KEY=$BOSH_LITE_PRIVATE_KEY
-BOSH_LITE_PRIVATE_KEY=$TMPDIR/id_rsa_bosh
-
-eval `ssh-agent -s`
-ssh-add $BOSH_LITE_PRIVATE_KEY
+#cp $BOSH_LITE_PRIVATE_KEY $TMPDIR/id_rsa_bosh
+#chmod 0600 $TMPDIR/id_rsa_bosh
+#OLD_KEY=$BOSH_LITE_PRIVATE_KEY
+#BOSH_LITE_PRIVATE_KEY=$TMPDIR/id_rsa_bosh
+#
+#eval `ssh-agent -s`
+#ssh-add $BOSH_LITE_PRIVATE_KEY
 
 echo -e "\n.ruby-version: `cat .ruby-version`"
 ./setup-cats.rb
