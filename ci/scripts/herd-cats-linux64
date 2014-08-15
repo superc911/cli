@@ -2,7 +2,7 @@
 
 set -e
 
-export GOPATH=~/go
+#export GOPATH=~/go
 rm -rf $GOPATH/pkg/*
 
 go get -d github.com/cloudfoundry/cf-acceptance-tests/

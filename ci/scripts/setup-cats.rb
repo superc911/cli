@@ -18,11 +18,13 @@ def run_or_die(cmd)
   raise "Command failed:\n#{err}" unless status == 0
 end
 
-cleanup_cmd = <<-BASH
-sudo rm -rfv $(sudo find /opt/warden/disks/bind_mount_points -name "*cc-droplets*") && \
-sudo truncate -s 0 /opt/warden/disks/ephemeral_mount_point/*/sys/log/dea_logging_agent/*.log
-BASH
-run_or_die(%(ssh -o "StrictHostKeyChecking no" #{BOSH_LITE_HOSTNAME} '#{cleanup_cmd}'))
+# BOSH-Lite doesn't clean up very well, which is why we had this.
+#
+#cleanup_cmd = <<-BASH
+#sudo rm -rfv $(sudo find /opt/warden/disks/bind_mount_points -name "*cc-droplets*") && \
+#sudo truncate -s 0 /opt/warden/disks/ephemeral_mount_point/*/sys/log/dea_logging_agent/*.log
+#BASH
+#run_or_die(%(ssh -o "StrictHostKeyChecking no" #{BOSH_LITE_HOSTNAME} '#{cleanup_cmd}'))
 
 cf "api #{CC_HOSTNAME} --skip-ssl-validation"
 cf "login -u #{CF_ADMIN_USER} -p #{CF_ADMIN_PASSWORD}"
