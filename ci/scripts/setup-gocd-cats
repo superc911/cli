@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 (
   function cleanup {
     kill $SSH_AGENT_PID
@@ -24,5 +23,7 @@
   eval `ssh-agent -s`
   ssh-add $BOSH_LITE_PRIVATE_KEY
 
+  echo -e "\n.ruby-version: `cat .ruby-version`"
+  echo 1.9.3-p547 > .ruby-version
   ./setup-cats.rb
 )
