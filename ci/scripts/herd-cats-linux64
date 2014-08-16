@@ -12,7 +12,7 @@ echo `ls $GOPATH`
 echo $PWD
 echo `ls $PWD`
 
-go get -d github.com/cloudfoundry/cf-acceptance-tests/
+(go get -d github.com/cloudfoundry/cf-acceptance-tests/)
 echo `ls $GOPATH`
 echo $PWD
 echo `ls $PWD`
