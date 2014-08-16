@@ -27,6 +27,7 @@ chmod u+x $CATSPATH/cf
 export PATH=$PATH:$CATSPATH
 
 cd $CATSPATH
+
 export CONFIG=$CATSPATH/config.json
 git pull
 git checkout CLI-non-backwards-compatible
