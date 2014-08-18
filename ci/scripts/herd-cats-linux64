@@ -26,8 +26,9 @@ export PATH=$PATH:$CATSPATH
 cd $CATSPATH
 git checkout master
 
-echo "{ \"apps_domain\": $CC_HOSTNAME, \"persistent_app_host\": \"persistent-app-linux64\" }" > $CATSPATH/config.json
+echo `{ \"apps_domain\": $APPS_DOMAIN, \"persistent_app_host\": \"persistent-app-linux64\" }` > $CATSPATH/config.json
 export CONFIG=$CATSPATH/config.json
+cat $CONFIG
 
 local_gopath=$CATSPATH/Godeps/_workspace
 
