@@ -9,6 +9,10 @@ echo `ls $GOPATH`
 echo $PWD
 echo `ls $PWD`
 
+$(dirname $0)/create-cats-config
+export CONFIG=$PWD/config.json
+cat $CONFIG
+
 (trap "exit 0" EXIT && go get -d github.com/cloudfoundry/cf-acceptance-tests/)
 echo `ls $GOPATH`
 echo $PWD
@@ -26,10 +30,6 @@ export PATH=$PATH:$CATSPATH
 cd $CATSPATH
 git checkout master
 git pull
-
-$(dirname $0)/create-cats-config
-export CONFIG=$CATSPATH/config.json
-cat $CONFIG
 
 local_gopath=$CATSPATH/Godeps/_workspace
 
