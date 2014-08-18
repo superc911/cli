@@ -28,7 +28,7 @@ rm -f $CATSPATH/gcf
 curl https://s3.amazonaws.com/go-cli/builds/cf-linux-amd64 > $CATSPATH/cf
 chmod u+x $CATSPATH/cf
 
-export PATH=$PATH:$CATSPATH
+export PATH=$CATSPATH:$PATH
 
 cd $CATSPATH
 
