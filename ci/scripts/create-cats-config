@@ -10,7 +10,7 @@ cat<<EOF > config.json
   "cf_user_password": "$CF_USER_PASSWORD",
   "cf_org": "$CF_ORG",
   "cf_space": "$CF_SPACE",
-  "skip-ssl-validation": true,
+  "skip_ssl_validation": true,
   "persistent_app_host": "persistent-app-linux64"
 }
 EOF
