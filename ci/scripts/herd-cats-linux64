@@ -25,8 +25,9 @@ export PATH=$PATH:$CATSPATH
 
 cd $CATSPATH
 git checkout master
+git pull
 
-./create-cats-config
+$(dirname $0)/create-cats-config
 export CONFIG=$CATSPATH/config.json
 cat $CONFIG
 
