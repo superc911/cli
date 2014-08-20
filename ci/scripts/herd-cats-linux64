@@ -2,14 +2,10 @@
 
 set -e
 
-<<<<<<< HEAD
 export CF_RAISE_ERROR_ON_WARNINGS=true
 
 #export GOPATH=~/go
 
-=======
-#export GOPATH=~/go
->>>>>>> 309d515ace70d6a65a1cdfc1796deb3a27250ba5
 rm -rf $GOPATH/pkg/*
 
 echo `ls $GOPATH`
