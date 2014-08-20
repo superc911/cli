@@ -32,9 +32,6 @@ export PATH=$CATSPATH:$PATH
 
 cd $CATSPATH
 
-$(dirname $0)/create-cats-config
-export CONFIG=$CATSPATH/config.json
-
 git pull
 git checkout CLI-non-backwards-compatible
 
