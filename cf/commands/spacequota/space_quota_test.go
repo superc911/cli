@@ -28,74 +28,72 @@ var _ = Describe("quotas command", func() {
 		requirementsFactory = &testreq.FakeReqFactory{LoginSuccess: true}
 	})
 
-	runCommand := func() bool {
-		cmd := NewListSpaceQuotas(ui, testconfig.NewRepositoryWithDefaults(), quotaRepo)
-		return testcmd.RunCommand(cmd, []string{}, requirementsFactory)
+	runCommand := func(args ...string) bool {
+		cmd := NewSpaceQuota(ui, testconfig.NewRepositoryWithDefaults(), quotaRepo)
+		return testcmd.RunCommand(cmd, args, requirementsFactory)
 	}
 
 	Describe("requirements", func() {
 		It("requires the user to be logged in", func() {
 			requirementsFactory.LoginSuccess = false
-			Expect(runCommand()).ToNot(HavePassedRequirements())
+			Expect(runCommand("foo")).ToNot(HavePassedRequirements())
 		})
 
 		It("requires the user to target an org", func() {
 			requirementsFactory.TargetedOrgSuccess = false
+			Expect(runCommand("bar")).ToNot(HavePassedRequirements())
+		})
+
+		It("fails when a quota name is not provided", func() {
+			requirementsFactory.LoginSuccess = true
+			requirementsFactory.TargetedOrgSuccess = true
 			Expect(runCommand()).ToNot(HavePassedRequirements())
 		})
 	})
 
-	Context("when requirements have been met", func() {
+	Context("when logged in", func() {
 		JustBeforeEach(func() {
 			requirementsFactory.LoginSuccess = true
 			requirementsFactory.TargetedOrgSuccess = true
-			Expect(runCommand()).To(HavePassedRequirements())
+			Expect(runCommand("quota-name")).To(HavePassedRequirements())
 		})
 
 		Context("when quotas exist", func() {
 			BeforeEach(func() {
-				quotaRepo.FindByOrgReturns([]models.SpaceQuota{
+				quotaRepo.FindByNameReturns(
 					models.SpaceQuota{
 						Name:                    "quota-name",
 						MemoryLimit:             1024,
-						InstanceMemoryLimit:     512,
+						InstanceMemoryLimit:     -1,
 						RoutesLimit:             111,
 						ServicesLimit:           222,
 						NonBasicServicesAllowed: true,
 						OrgGuid:                 "my-org-guid",
-					},
-					models.SpaceQuota{
-						Name:                    "quota-non-basic-not-allowed",
-						MemoryLimit:             434,
-						InstanceMemoryLimit:     -1,
-						RoutesLimit:             1,
-						ServicesLimit:           2,
-						NonBasicServicesAllowed: false,
-						OrgGuid:                 "my-org-guid",
-					},
-				}, nil)
+					}, nil)
 			})
 
-			It("lists quotas", func() {
-				Expect(quotaRepo.FindByOrgArgsForCall(0)).To(Equal("my-org-guid"))
+			It("lists the specific quota info", func() {
+				Expect(quotaRepo.FindByNameArgsForCall(0)).To(Equal("quota-name"))
 				Expect(ui.Outputs).To(ContainSubstrings(
-					[]string{"Getting space quotas as", "my-user"},
+					[]string{"Getting space quota quota-name info as", "my-user"},
 					[]string{"OK"},
-					[]string{"name", "total memory limit", "instance memory limit", "routes", "service instances", "paid service plans"},
-					[]string{"quota-name", "1G", "512M", "111", "222", "allowed"},
-					[]string{"quota-non-basic-not-allowed", "434M", "-1 ", "1", "2", "disallowed"},
+					[]string{"total memory limit", "1G"},
+					[]string{"instance memory limit", "-1 "},
+					[]string{"routes", "111"},
+					[]string{"service", "222"},
+					[]string{"non basic services", "allowed"},
 				))
 			})
 		})
 
 		Context("when an error occurs fetching quotas", func() {
 			BeforeEach(func() {
-				quotaRepo.FindByOrgReturns([]models.SpaceQuota{}, errors.New("I haz a borken!"))
+				quotaRepo.FindByNameReturns(models.SpaceQuota{}, errors.New("I haz a borken!"))
 			})
 
 			It("prints an error", func() {
 				Expect(ui.Outputs).To(ContainSubstrings(
-					[]string{"Getting space quotas as", "my-user"},
+					[]string{"Getting space quota quota-name info as", "my-user"},
 					[]string{"FAILED"},
 				))
 			})

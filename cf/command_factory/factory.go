@@ -105,7 +105,7 @@ func NewFactory(ui terminal.UI, config configuration.ReadWriter, manifestRepo ma
 	factory.cmdsByName["set-org-role"] = user.NewSetOrgRole(ui, config, repoLocator.GetUserRepository())
 	factory.cmdsByName["set-quota"] = organization.NewSetQuota(ui, config, repoLocator.GetQuotaRepository())
 	factory.cmdsByName["create-shared-domain"] = domain.NewCreateSharedDomain(ui, config, repoLocator.GetDomainRepository())
-	factory.cmdsByName["space"] = space.NewShowSpace(ui, config)
+	factory.cmdsByName["space"] = space.NewShowSpace(ui, config, repoLocator.GetSpaceQuotaRepository())
 	factory.cmdsByName["space-users"] = user.NewSpaceUsers(ui, config, repoLocator.GetSpaceRepository(), repoLocator.GetUserRepository())
 	factory.cmdsByName["spaces"] = space.NewListSpaces(ui, config, repoLocator.GetSpaceRepository())
 	factory.cmdsByName["stacks"] = commands.NewListStacks(ui, config, repoLocator.GetStackRepository())
@@ -243,8 +243,14 @@ func NewFactory(ui terminal.UI, config configuration.ReadWriter, manifestRepo ma
 	)
 
 	factory.cmdsByName["create-space-quota"] = spacequota.NewCreateSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository(), repoLocator.GetOrganizationRepository())
+	factory.cmdsByName["delete-space-quota"] = spacequota.NewDeleteSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository())
 
 	factory.cmdsByName["space-quotas"] = spacequota.NewListSpaceQuotas(ui, config, repoLocator.GetSpaceQuotaRepository())
+	factory.cmdsByName["space-quota"] = spacequota.NewSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository())
+	factory.cmdsByName["update-space-quota"] = spacequota.NewUpdateSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository())
+	factory.cmdsByName["set-space-quota"] = spacequota.NewSetSpaceQuota(ui, config, repoLocator.GetSpaceRepository(), repoLocator.GetSpaceQuotaRepository())
+	factory.cmdsByName["unset-space-quota"] = spacequota.NewUnsetSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository(), repoLocator.GetSpaceRepository())
+
 	return
 }
 

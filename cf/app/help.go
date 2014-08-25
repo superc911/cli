@@ -2,13 +2,14 @@ package app
 
 import (
 	"fmt"
-	. "github.com/cloudfoundry/cli/cf/i18n"
 	"os"
 	"reflect"
 	"strings"
 	"text/tabwriter"
 	"text/template"
 	"unicode/utf8"
+
+	. "github.com/cloudfoundry/cli/cf/i18n"
 
 	"github.com/cloudfoundry/cli/cf/terminal"
 	"github.com/codegangsta/cli"
@@ -220,8 +221,13 @@ func newAppPresenter(app *cli.App) (presenter appPresenter) {
 			Name: T("SPACE ADMIN"),
 			CommandSubGroups: [][]cmdPresenter{
 				{
-					presentCommand("create-space-quota"),
+					presentCommand("space-quota"),
 					presentCommand("space-quotas"),
+					presentCommand("create-space-quota"),
+					presentCommand("update-space-quota"),
+					presentCommand("delete-space-quota"),
+					presentCommand("set-space-quota"),
+					presentCommand("unset-space-quota"),
 				},
 			},
 		}, {
