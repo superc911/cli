@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-go get -u github.com/tools/godep
+export API_ENDPOINT="http://api.`cat api-address`.xip.io"
+export API="http://api.`cat api-address`.xip.io"
+export APPS_DOMAIN="`cat api-address`.xip.io"
+export CC_HOSTNAME="api.`cat api-address`.xip.io"
+export BOSH_LITE_HOSTNAME="ubuntu@`cat api-address`"

@@ -16,6 +16,7 @@
   if [[ ! -z $GO_CD ]] ; then
     echo -e "\nSetting up GoCD Environment..."
     export PATH=$GOPATH/bin:$PATH
+    go get -u github.com/tools/godep
     ci/scripts/setup-gocd-env
   fi
 
