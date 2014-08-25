@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
-export API_ENDPOINT="http://api.`cat api-address`.xip.io"
-export API="http://api.`cat api-address`.xip.io"
-export APPS_DOMAIN="`cat api-address`.xip.io"
-export CC_HOSTNAME="api.`cat api-address`.xip.io"
-export BOSH_LITE_HOSTNAME="ubuntu@`cat api-address`"
+IP_ADDR=`cat api-address`
+
+export API_ENDPOINT="http://api.${IP_ADDR}.xip.io"
+export API="http://api.${IP_ADDR}.xip.io"
+export APPS_DOMAIN="${IP_ADDR}.xip.io"
+export CC_HOSTNAME="api.${IP_ADDR}.xip.io"
+export BOSH_LITE_HOSTNAME="ubuntu@${IP_ADDR}"
