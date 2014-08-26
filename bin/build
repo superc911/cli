@@ -4,7 +4,7 @@ set -e
 
 echo -e "\nGenerating Binary..."
 
-ROOT_DIR=$(cd $(dirname $(dirname $0)) && pwd)
+ROOT_DIR="$(cd $(dirname $(dirname $0)) && pwd)"
 
 $ROOT_DIR/bin/generate-language-resources
 
