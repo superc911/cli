@@ -16,3 +16,6 @@ ln -s $ROOT_DIR $CLI_GOPATH/src/github.com/cloudfoundry/cli
 GODEP_GOPATH=$ROOT_DIR/Godeps/_workspace
 
 GOPATH=$CLI_GOPATH:$GODEP_GOPATH:$GOPATH go build -o $ROOT_DIR/out/cf ./main
+
+# Clean out the symlinks for GoCD.
+rm -rf $CLI_GOPATH
