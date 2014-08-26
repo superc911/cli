@@ -33,13 +33,13 @@
   # Clean up old .a files in GOPATH
   # It seems like `go clean` should do this but ... not so much
   if [[ -d $GOPATH/pkg ]] ; then
-    pushd $GOPATH/pkg
+    pushd "$GOPATH/pkg"
     rm -Rf *
     popd
   fi
 
   if [[ -d $($GODEP path)/pkg ]] ; then
-    pushd $($GODEP path)/pkg
+    pushd "$($GODEP path)/pkg"
     rm -Rf *
     popd
   fi
