@@ -1,18 +1,14 @@
 package models
 
-type ServiceInstanceFields struct {
+type ServiceInstance struct {
 	Guid             string
 	Name             string
 	SysLogDrainUrl   string
 	ApplicationNames []string
 	Params           map[string]interface{}
-}
-
-type ServiceInstance struct {
-	ServiceInstanceFields
-	ServiceBindings []ServiceBindingFields
-	ServicePlan     ServicePlanFields
-	ServiceOffering ServiceOfferingFields
+	ServiceBindings  []ServiceBindingFields
+	ServicePlan      ServicePlan
+	ServiceOffering  ServiceOffering
 }
 
 func (inst ServiceInstance) IsUserProvided() bool {

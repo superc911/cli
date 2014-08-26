@@ -18,19 +18,20 @@ type ServiceInstanceEntity struct {
 	ServicePlan     ServicePlanResource      `json:"service_plan"`
 }
 
-func (resource ServiceInstanceResource) ToFields() (fields models.ServiceInstanceFields) {
-	fields.Guid = resource.Metadata.Guid
-	fields.Name = resource.Entity.Name
+func (resource ServiceInstanceResource) ToFields() (serviceInstance models.ServiceInstance) {
+	serviceInstance.Guid = resource.Metadata.Guid
+	serviceInstance.Name = resource.Entity.Name
 	return
 }
 
-func (resource ServiceInstanceResource) ToModel() (instance models.ServiceInstance) {
-	instance.ServiceInstanceFields = resource.ToFields()
-	instance.ServicePlan = resource.Entity.ServicePlan.ToFields()
+func (resource ServiceInstanceResource) ToModel() models.ServiceInstance {
+	serviceInstance := resource.ToFields()
 
-	instance.ServiceBindings = []models.ServiceBindingFields{}
+	serviceInstance.ServicePlan = resource.Entity.ServicePlan.ToFields()
+
+	serviceInstance.ServiceBindings = []models.ServiceBindingFields{}
 	for _, bindingResource := range resource.Entity.ServiceBindings {
-		instance.ServiceBindings = append(instance.ServiceBindings, bindingResource.ToFields())
+		serviceInstance.ServiceBindings = append(serviceInstance.ServiceBindings, bindingResource.ToFields())
 	}
-	return
+	return serviceInstance
 }

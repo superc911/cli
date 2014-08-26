@@ -59,8 +59,8 @@ var _ = Describe("service command", func() {
 
 		Context("when the service is externally provided", func() {
 			BeforeEach(func() {
-				offering := models.ServiceOfferingFields{Label: "mysql", DocumentationUrl: "http://documentation.url", Description: "the-description"}
-				plan := models.ServicePlanFields{Guid: "plan-guid", Name: "plan-name"}
+				offering := models.ServiceOffering{Label: "mysql", DocumentationUrl: "http://documentation.url", Description: "the-description"}
+				plan := models.ServicePlan{Guid: "plan-guid", Name: "plan-name"}
 
 				serviceInstance := models.ServiceInstance{}
 				serviceInstance.Name = "service1"

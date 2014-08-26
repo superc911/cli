@@ -21,21 +21,22 @@ type ServiceOfferingEntity struct {
 	ServicePlans     []ServicePlanResource `json:"service_plans"`
 }
 
-func (resource ServiceOfferingResource) ToFields() (fields models.ServiceOfferingFields) {
-	fields.Label = resource.Entity.Label
-	fields.Version = resource.Entity.Version
-	fields.Provider = resource.Entity.Provider
-	fields.Description = resource.Entity.Description
-	fields.BrokerGuid = resource.Entity.BrokerGuid
-	fields.Guid = resource.Metadata.Guid
-	fields.DocumentationUrl = resource.Entity.DocumentationUrl
-	return
+func (resource ServiceOfferingResource) ToFields() models.ServiceOffering {
+	return models.ServiceOffering{
+		Label:            resource.Entity.Label,
+		Version:          resource.Entity.Version,
+		Provider:         resource.Entity.Provider,
+		Description:      resource.Entity.Description,
+		BrokerGuid:       resource.Entity.BrokerGuid,
+		Guid:             resource.Metadata.Guid,
+		DocumentationUrl: resource.Entity.DocumentationUrl,
+	}
 }
 
-func (resource ServiceOfferingResource) ToModel() (offering models.ServiceOffering) {
-	offering.ServiceOfferingFields = resource.ToFields()
+func (resource ServiceOfferingResource) ToModel() models.ServiceOffering {
+	offering := resource.ToFields()
 	for _, p := range resource.Entity.ServicePlans {
-		servicePlan := models.ServicePlanFields{}
+		servicePlan := models.ServicePlan{}
 		servicePlan.Name = p.Entity.Name
 		servicePlan.Guid = p.Metadata.Guid
 		offering.Plans = append(offering.Plans, servicePlan)

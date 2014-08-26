@@ -12,8 +12,8 @@ import (
 )
 
 type ServicePlanRepository interface {
-	Search(searchParameters map[string]string) ([]models.ServicePlanFields, error)
-	Update(models.ServicePlanFields, string, bool) error
+	Search(searchParameters map[string]string) ([]models.ServicePlan, error)
+	Update(models.ServicePlan, string, bool) error
 }
 
 type CloudControllerServicePlanRepository struct {
@@ -28,7 +28,7 @@ func NewCloudControllerServicePlanRepository(config configuration.Reader, gatewa
 	}
 }
 
-func (repo CloudControllerServicePlanRepository) Update(servicePlan models.ServicePlanFields, serviceGuid string, public bool) error {
+func (repo CloudControllerServicePlanRepository) Update(servicePlan models.ServicePlan, serviceGuid string, public bool) error {
 	var body string
 
 	body = fmt.Sprintf(`{"name":"%s", "free":%t, "description":"%s", "public":%t, "service_guid":"%s"}`,
@@ -43,7 +43,7 @@ func (repo CloudControllerServicePlanRepository) Update(servicePlan models.Servi
 	return repo.gateway.UpdateResource(url, strings.NewReader(body))
 }
 
-func (repo CloudControllerServicePlanRepository) Search(queryParams map[string]string) (plans []models.ServicePlanFields, err error) {
+func (repo CloudControllerServicePlanRepository) Search(queryParams map[string]string) (plans []models.ServicePlan, err error) {
 	err = repo.gateway.ListPaginatedResources(
 		repo.config.ApiEndpoint(),
 		combineQueryParametersWithUri("/v2/service_plans", queryParams),

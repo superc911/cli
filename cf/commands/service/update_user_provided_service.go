@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+
 	. "github.com/cloudfoundry/cli/cf/i18n"
 
 	"github.com/cloudfoundry/cli/cf"
@@ -93,7 +94,7 @@ func (cmd *UpdateUserProvidedService) Run(c *cli.Context) {
 	serviceInstance.Params = paramsMap
 	serviceInstance.SysLogDrainUrl = drainUrl
 
-	apiErr := cmd.userProvidedServiceInstanceRepo.Update(serviceInstance.ServiceInstanceFields)
+	apiErr := cmd.userProvidedServiceInstanceRepo.Update(serviceInstance)
 	if apiErr != nil {
 		cmd.ui.Failed(apiErr.Error())
 		return

@@ -29,23 +29,22 @@ var _ = Describe("marketplace command", func() {
 
 		fakeServiceOfferings = []models.ServiceOffering{
 			models.ServiceOffering{
-				Plans: []models.ServicePlanFields{
-					models.ServicePlanFields{Name: "service-plan-a"},
-					models.ServicePlanFields{Name: "service-plan-b"},
+				Plans: []models.ServicePlan{
+					models.ServicePlan{Name: "service-plan-a"},
+					models.ServicePlan{Name: "service-plan-b"},
 				},
-				ServiceOfferingFields: models.ServiceOfferingFields{
-					Label:       "zzz-my-service-offering",
-					Description: "service offering 1 description",
-				}},
+				Label:       "zzz-my-service-offering",
+				Description: "service offering 1 description",
+			},
 			models.ServiceOffering{
-				Plans: []models.ServicePlanFields{
-					models.ServicePlanFields{Name: "service-plan-c"},
-					models.ServicePlanFields{Name: "service-plan-d"}},
-				ServiceOfferingFields: models.ServiceOfferingFields{
-					Label:       "aaa-my-service-offering",
-					Description: "service offering 2 description",
+				Plans: []models.ServicePlan{
+					models.ServicePlan{Name: "service-plan-c"},
+					models.ServicePlan{Name: "service-plan-d"},
 				},
-			}}
+				Label:       "aaa-my-service-offering",
+				Description: "service offering 2 description",
+			},
+		}
 	})
 
 	Context("when the an API endpoint is not targeted", func() {

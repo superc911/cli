@@ -63,17 +63,17 @@ var _ = Describe("services", func() {
 	})
 
 	It("lists available services", func() {
-		plan := models.ServicePlanFields{
+		plan := models.ServicePlan{
 			Guid: "spark-guid",
 			Name: "spark",
 		}
 
-		plan2 := models.ServicePlanFields{
+		plan2 := models.ServicePlan{
 			Guid: "spark-guid-2",
 			Name: "spark-2",
 		}
 
-		offering := models.ServiceOfferingFields{Label: "cleardb"}
+		offering := models.ServiceOffering{Label: "cleardb"}
 
 		serviceInstance := models.ServiceInstance{}
 		serviceInstance.Name = "my-service-1"

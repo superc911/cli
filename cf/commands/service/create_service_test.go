@@ -37,7 +37,7 @@ var _ = Describe("create-service command", func() {
 
 		offering1 = models.ServiceOffering{}
 		offering1.Label = "cleardb"
-		offering1.Plans = []models.ServicePlanFields{{
+		offering1.Plans = []models.ServicePlan{{
 			Name: "spark",
 			Guid: "cleardb-spark-guid",
 		}}

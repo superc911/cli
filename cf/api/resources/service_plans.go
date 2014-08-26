@@ -27,15 +27,16 @@ type ServicePlanDescription struct {
 	ServiceProvider string
 }
 
-func (resource ServicePlanResource) ToFields() (fields models.ServicePlanFields) {
-	fields.Guid = resource.Metadata.Guid
-	fields.Name = resource.Entity.Name
-	fields.Free = resource.Entity.Free
-	fields.Description = resource.Entity.Description
-	fields.Public = resource.Entity.Public
-	fields.Active = resource.Entity.Active
-	fields.ServiceOfferingGuid = resource.Entity.ServiceOfferingGuid
-	return
+func (resource ServicePlanResource) ToFields() models.ServicePlan {
+	return models.ServicePlan{
+		Guid:                resource.Metadata.Guid,
+		Name:                resource.Entity.Name,
+		Free:                resource.Entity.Free,
+		Description:         resource.Entity.Description,
+		Public:              resource.Entity.Public,
+		Active:              resource.Entity.Active,
+		ServiceOfferingGuid: resource.Entity.ServiceOfferingGuid,
+	}
 }
 
 func (planDesc ServicePlanDescription) String() string {

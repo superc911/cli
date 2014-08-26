@@ -84,6 +84,7 @@ func (cmd CreateService) CreateService(serviceName string, planName string, serv
 	if apiErr != nil {
 		return
 	}
+
 	plan, apiErr := findPlanFromOfferings(offerings, planName)
 	if apiErr != nil {
 		return
@@ -107,7 +108,7 @@ func findOfferings(offerings []models.ServiceOffering, name string) (matchingOff
 	return
 }
 
-func findPlanFromOfferings(offerings models.ServiceOfferings, name string) (plan models.ServicePlanFields, err error) {
+func findPlanFromOfferings(offerings models.ServiceOfferings, name string) (plan models.ServicePlan, err error) {
 	for _, offering := range offerings {
 		for _, plan := range offering.Plans {
 			if name == plan.Name {

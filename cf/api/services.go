@@ -45,7 +45,7 @@ func (repo CloudControllerServiceRepository) GetServiceOfferingByGuid(serviceGui
 	offering := new(resources.ServiceOfferingResource)
 	apiErr := repo.gateway.GetResource(repo.config.ApiEndpoint()+fmt.Sprintf("/v2/services/%s", serviceGuid), offering)
 	serviceOffering := offering.ToFields()
-	return models.ServiceOffering{ServiceOfferingFields: serviceOffering}, apiErr
+	return serviceOffering, apiErr
 }
 
 func (repo CloudControllerServiceRepository) FindServiceOfferingsForSpaceByLabel(spaceGuid, name string) (offerings models.ServiceOfferings, err error) {

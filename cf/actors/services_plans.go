@@ -122,7 +122,7 @@ func (actor ServicePlanHandler) UpdatePlanAndOrgForService(serviceName, planName
 	}
 
 	found := false
-	var servicePlan models.ServicePlanFields
+	var servicePlan models.ServicePlan
 	for i, val := range service.Plans {
 		if val.Name == planName {
 			found = true
@@ -166,7 +166,7 @@ func (actor ServicePlanHandler) UpdateSinglePlanForService(serviceName string, p
 }
 
 func (actor ServicePlanHandler) updateSinglePlan(serviceOffering models.ServiceOffering, planName string, setPlanVisibility bool) (PlanAccess, error) {
-	var planToUpdate *models.ServicePlanFields
+	var planToUpdate *models.ServicePlan
 
 	//find the service plan and set it as the only service plan for update
 	for _, servicePlan := range serviceOffering.Plans {
@@ -204,7 +204,7 @@ func (actor ServicePlanHandler) deleteServicePlanVisibilities(queryParams map[st
 	return nil
 }
 
-func (actor ServicePlanHandler) updateServicePlanAvailability(serviceGuid string, servicePlan models.ServicePlanFields, setPlanVisibility bool) error {
+func (actor ServicePlanHandler) updateServicePlanAvailability(serviceGuid string, servicePlan models.ServicePlan, setPlanVisibility bool) error {
 	// We delete all service plan visibilities for the given Plan since the attribute public should function as a giant on/off
 	// switch for all orgs. Thus we need to clean up any visibilities laying around so that they don't carry over.
 	err := actor.deleteServicePlanVisibilities(map[string]string{"service_plan_guid": servicePlan.Guid})
@@ -259,7 +259,7 @@ func (actor ServicePlanHandler) FindServiceAccess(serviceName string) (ServiceAc
 	return SomePlansArePublicSomeAreLimitedSomeArePrivate, nil
 }
 
-func (actor ServicePlanHandler) findPlanAccess(plan models.ServicePlanFields) PlanAccess {
+func (actor ServicePlanHandler) findPlanAccess(plan models.ServicePlan) PlanAccess {
 	if plan.Public {
 		return All
 	} else if len(plan.OrgNames) > 0 {

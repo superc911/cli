@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+
 	"github.com/cloudfoundry/cli/cf/configuration"
 	"github.com/cloudfoundry/cli/cf/models"
 	"github.com/cloudfoundry/cli/cf/net"
@@ -17,12 +18,12 @@ func (resource ServiceInstancesSummaries) ToModels() (instances []models.Service
 		applicationNames := resource.findApplicationNamesForInstance(instanceSummary.Name)
 
 		planSummary := instanceSummary.ServicePlan
-		servicePlan := models.ServicePlanFields{}
+		servicePlan := models.ServicePlan{}
 		servicePlan.Name = planSummary.Name
 		servicePlan.Guid = planSummary.Guid
 
 		offeringSummary := planSummary.ServiceOffering
-		serviceOffering := models.ServiceOfferingFields{}
+		serviceOffering := models.ServiceOffering{}
 		serviceOffering.Label = offeringSummary.Label
 		serviceOffering.Provider = offeringSummary.Provider
 		serviceOffering.Version = offeringSummary.Version

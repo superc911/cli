@@ -1,6 +1,8 @@
 package models
 
-type ServiceOfferingFields struct {
+type ServiceOfferings []ServiceOffering
+
+type ServiceOffering struct {
 	Guid             string
 	BrokerGuid       string
 	Label            string
@@ -8,12 +10,7 @@ type ServiceOfferingFields struct {
 	Version          string
 	Description      string
 	DocumentationUrl string
-}
-
-type ServiceOfferings []ServiceOffering
-type ServiceOffering struct {
-	ServiceOfferingFields
-	Plans []ServicePlanFields
+	Plans            []ServicePlan
 }
 
 func (s ServiceOfferings) Len() int {

@@ -1,6 +1,6 @@
 package models
 
-type ServicePlanFields struct {
+type ServicePlan struct {
 	Guid                string
 	Name                string
 	Free                bool
@@ -9,18 +9,14 @@ type ServicePlanFields struct {
 	Active              bool
 	ServiceOfferingGuid string
 	OrgNames            []string
+	ServiceOffering     ServiceOffering
 }
 
-type ServicePlan struct {
-	ServicePlanFields
-	ServiceOffering ServiceOfferingFields
-}
-
-func (servicePlanFields ServicePlanFields) OrgHasVisibility(orgName string) bool {
-	if servicePlanFields.Public {
+func (servicePlan ServicePlan) OrgHasVisibility(orgName string) bool {
+	if servicePlan.Public {
 		return true
 	}
-	for _, org := range servicePlanFields.OrgNames {
+	for _, org := range servicePlan.OrgNames {
 		if org == orgName {
 			return true
 		}

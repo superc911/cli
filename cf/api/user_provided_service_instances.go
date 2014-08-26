@@ -13,7 +13,7 @@ import (
 
 type UserProvidedServiceInstanceRepository interface {
 	Create(name, drainUrl string, params map[string]interface{}) (apiErr error)
-	Update(serviceInstanceFields models.ServiceInstanceFields) (apiErr error)
+	Update(serviceInstance models.ServiceInstance) (apiErr error)
 }
 
 type CCUserProvidedServiceInstanceRepository struct {
@@ -52,15 +52,15 @@ func (repo CCUserProvidedServiceInstanceRepository) Create(name, drainUrl string
 	return repo.gateway.CreateResource(path, bytes.NewReader(jsonBytes))
 }
 
-func (repo CCUserProvidedServiceInstanceRepository) Update(serviceInstanceFields models.ServiceInstanceFields) (apiErr error) {
-	path := fmt.Sprintf("%s/v2/user_provided_service_instances/%s", repo.config.ApiEndpoint(), serviceInstanceFields.Guid)
+func (repo CCUserProvidedServiceInstanceRepository) Update(serviceInstance models.ServiceInstance) (apiErr error) {
+	path := fmt.Sprintf("%s/v2/user_provided_service_instances/%s", repo.config.ApiEndpoint(), serviceInstance.Guid)
 
 	type RequestBody struct {
 		Credentials    map[string]interface{} `json:"credentials,omitempty"`
 		SysLogDrainUrl string                 `json:"syslog_drain_url,omitempty"`
 	}
 
-	reqBody := RequestBody{serviceInstanceFields.Params, serviceInstanceFields.SysLogDrainUrl}
+	reqBody := RequestBody{serviceInstance.Params, serviceInstance.SysLogDrainUrl}
 	jsonBytes, err := json.Marshal(reqBody)
 	if err != nil {
 		apiErr = errors.NewWithError("Error parsing response", err)

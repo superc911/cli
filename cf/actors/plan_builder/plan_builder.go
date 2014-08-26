@@ -6,9 +6,9 @@ import (
 )
 
 type PlanBuilder interface {
-	AttachOrgsToPlans([]models.ServicePlanFields) ([]models.ServicePlanFields, error)
-	GetPlansForService(string) ([]models.ServicePlanFields, error)
-	GetPlansVisibleToOrg(string) ([]models.ServicePlanFields, error)
+	AttachOrgsToPlans([]models.ServicePlan) ([]models.ServicePlan, error)
+	GetPlansForService(string) ([]models.ServicePlan, error)
+	GetPlansVisibleToOrg(string) ([]models.ServicePlan, error)
 }
 
 var (
@@ -30,7 +30,7 @@ func NewBuilder(plan api.ServicePlanRepository, vis api.ServicePlanVisibilityRep
 	}
 }
 
-func (builder Builder) AttachOrgsToPlans(plans []models.ServicePlanFields) ([]models.ServicePlanFields, error) {
+func (builder Builder) AttachOrgsToPlans(plans []models.ServicePlan) ([]models.ServicePlan, error) {
 	visMap, err := builder.buildPlanToOrgsVisibilityMap()
 	if err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ func (builder Builder) AttachOrgsToPlans(plans []models.ServicePlanFields) ([]mo
 	return plans, nil
 }
 
-func (builder Builder) GetPlansForService(serviceGuid string) ([]models.ServicePlanFields, error) {
+func (builder Builder) GetPlansForService(serviceGuid string) ([]models.ServicePlan, error) {
 	plans, err := builder.servicePlanRepo.Search(map[string]string{"service_guid": serviceGuid})
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (builder Builder) GetPlansForService(serviceGuid string) ([]models.ServiceP
 	return plans, nil
 }
 
-func (builder Builder) GetPlansVisibleToOrg(orgName string) ([]models.ServicePlanFields, error) {
-	var plansToReturn []models.ServicePlanFields
+func (builder Builder) GetPlansVisibleToOrg(orgName string) ([]models.ServicePlan, error) {
+	var plansToReturn []models.ServicePlan
 	allPlans, err := builder.servicePlanRepo.Search(nil)
 
 	planToOrgsVisMap, err := builder.buildPlanToOrgsVisibilityMap()

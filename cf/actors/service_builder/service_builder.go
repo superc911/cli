@@ -88,7 +88,7 @@ func (builder Builder) attachPlansToService(service models.ServiceOffering) (mod
 	return service, nil
 }
 
-func (builder Builder) attachServicesToPlans(plans []models.ServicePlanFields) ([]models.ServiceOffering, error) {
+func (builder Builder) attachServicesToPlans(plans []models.ServicePlan) ([]models.ServiceOffering, error) {
 	var services []models.ServiceOffering
 	servicesMap := make(map[string]models.ServiceOffering)
 
@@ -117,7 +117,7 @@ func (builder Builder) attachServicesToPlans(plans []models.ServicePlanFields) (
 	return services, nil
 }
 
-func (builder Builder) attachSpecificServiceToPlans(serviceName string, plans []models.ServicePlanFields) (models.ServiceOffering, error) {
+func (builder Builder) attachSpecificServiceToPlans(serviceName string, plans []models.ServicePlan) (models.ServiceOffering, error) {
 	service, err := builder.serviceRepo.FindServiceOfferingByLabel(serviceName)
 	if err != nil {
 		return models.ServiceOffering{}, err

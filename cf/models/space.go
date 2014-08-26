@@ -9,7 +9,7 @@ type Space struct {
 	SpaceFields
 	Organization     OrganizationFields
 	Applications     []ApplicationFields
-	ServiceInstances []ServiceInstanceFields
+	ServiceInstances []ServiceInstance
 	Domains          []DomainFields
 	SecurityGroups   []SecurityGroupFields
 	SpaceQuotaGuid   string
