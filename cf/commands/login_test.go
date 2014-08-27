@@ -27,6 +27,8 @@ var _ = Describe("Login Command", func() {
 		endpointRepo *testapi.FakeEndpointRepo
 		orgRepo      *fake_organizations.FakeOrganizationRepository
 		spaceRepo    *testapi.FakeSpaceRepository
+
+		org models.Organization
 	)
 
 	BeforeEach(func() {
@@ -40,7 +42,7 @@ var _ = Describe("Login Command", func() {
 		}
 		endpointRepo = &testapi.FakeEndpointRepo{}
 
-		org := models.Organization{}
+		org = models.Organization{}
 		org.Name = "my-new-org"
 		org.Guid = "my-new-org-guid"
 
@@ -154,6 +156,7 @@ var _ = Describe("Login Command", func() {
 			It("lets the user specify an org and space using flags", func() {
 				Flags = []string{"-a", "api.example.com", "-u", "user@example.com", "-p", "password", "-o", "my-new-org", "-s", "my-space"}
 
+				orgRepo.FindByNameReturns(org2, nil)
 				l := NewLogin(ui, Config, authRepo, endpointRepo, orgRepo, spaceRepo)
 				testcmd.RunCommand(l, Flags, nil)
 
@@ -613,6 +616,7 @@ var _ = Describe("Login Command", func() {
 		Describe("and the login fails to target a space", func() {
 			BeforeEach(func() {
 				Flags = []string{"-u", "user@example.com", "-p", "password", "-o", "my-new-org", "-s", "nonexistent"}
+				orgRepo.FindByNameReturns(org, nil)
 
 				Config.SetSSLDisabled(true)
 			})
