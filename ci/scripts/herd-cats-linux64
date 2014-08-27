@@ -25,7 +25,7 @@ echo $CATSPATH
 echo `ls $CATSPATH`
 
 rm -f $CATSPATH/gcf
-mv $CATSPATH/cf-linux-amd64 $CATSPATH/cf
+mv $GOPATH/cf-linux-amd64 $CATSPATH/cf
 chmod u+x $CATSPATH/cf
 
 export PATH=$CATSPATH:$PATH
