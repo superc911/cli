@@ -18,7 +18,7 @@ import (
 
 var _ = Describe("target command", func() {
 	var (
-		orgRepo             *testapi.FakeOrgRepository
+		orgRepo             *testapi.FakeOrganizationRepository
 		spaceRepo           *testapi.FakeSpaceRepository
 		requirementsFactory *testreq.FakeReqFactory
 		config              configuration.ReadWriter
@@ -27,7 +27,7 @@ var _ = Describe("target command", func() {
 
 	BeforeEach(func() {
 		ui = new(testterm.FakeUI)
-		orgRepo = new(testapi.FakeOrgRepository)
+		orgRepo = new(testapi.FakeOrganizationRepository)
 		spaceRepo = new(testapi.FakeSpaceRepository)
 		requirementsFactory = new(testreq.FakeReqFactory)
 		config = testconfig.NewRepositoryWithDefaults()

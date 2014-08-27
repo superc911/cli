@@ -2,6 +2,7 @@ package commands_test
 
 import (
 	testapi "github.com/cloudfoundry/cli/cf/api/fakes"
+	fake_organizations "github.com/cloudfoundry/cli/cf/api/organizations/fakes"
 	. "github.com/cloudfoundry/cli/cf/commands"
 	"github.com/cloudfoundry/cli/cf/configuration"
 	"github.com/cloudfoundry/cli/cf/errors"
@@ -11,7 +12,6 @@ import (
 	testterm "github.com/cloudfoundry/cli/testhelpers/terminal"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"strconv"
 
 	. "github.com/cloudfoundry/cli/testhelpers/matchers"
 )
@@ -23,7 +23,7 @@ var _ = Describe("Login Command", func() {
 		ui           *testterm.FakeUI
 		authRepo     *testapi.FakeAuthenticationRepository
 		endpointRepo *testapi.FakeEndpointRepo
-		orgRepo      *testapi.FakeOrgRepository
+		orgRepo      *fake_organizations.FakeOrganizationRepository
 		spaceRepo    *testapi.FakeSpaceRepository
 	)
 
@@ -42,7 +42,7 @@ var _ = Describe("Login Command", func() {
 		org.Name = "my-new-org"
 		org.Guid = "my-new-org-guid"
 
-		orgRepo = &testapi.FakeOrgRepository{
+		orgRepo = &fake_organizations.FakeOrganizationRepository{
 			Organizations:          []models.Organization{org},
 			FindByNameOrganization: models.Organization{},
 		}
