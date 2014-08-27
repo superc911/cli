@@ -47,6 +47,7 @@ var _ = Describe("Login Command", func() {
 		org.Guid = "my-new-org-guid"
 
 		orgRepo = &fake_organizations.FakeOrganizationRepository{}
+		orgRepo.ListOrgsReturns([]models.Organization{org}, nil)
 
 		space := models.Space{}
 		space.Guid = "my-space-guid"
@@ -177,6 +178,7 @@ var _ = Describe("Login Command", func() {
 			})
 
 			It("doesn't ask the user for the API url if they have it in their config", func() {
+				orgRepo.FindByNameReturns(org, nil)
 				Config.SetApiEndpoint("http://api.example.com")
 
 				Flags = []string{"-o", "my-new-org", "-s", "my-space"}
@@ -595,7 +597,7 @@ var _ = Describe("Login Command", func() {
 		Describe("and the login fails to target an org", func() {
 			BeforeEach(func() {
 				Flags = []string{"-u", "user@example.com", "-p", "password", "-o", "nonexistentorg", "-s", "my-space"}
-
+				orgRepo.FindByNameReturns(models.Organization{}, errors.New("No org"))
 				Config.SetSSLDisabled(true)
 			})
 
