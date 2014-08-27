@@ -2,9 +2,9 @@
 package fakes
 
 import (
-	"sync"
 	"github.com/cloudfoundry/cli/cf/api"
 	"github.com/cloudfoundry/cli/cf/models"
+	"sync"
 )
 
 type FakeUserProvidedServiceInstanceRepository struct {
