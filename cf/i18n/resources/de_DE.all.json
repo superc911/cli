@@ -630,6 +630,16 @@
       "modified": false
    },
    {
+      "id": "CF_NAME disable-feature-flag FEATURE_NAME",
+      "translation": "CF_NAME disable-feature-flag FEATURE_NAME",
+      "modified": false
+   },
+   {
+      "id": "CF_NAME enable-feature-flag FEATURE_NAME",
+      "translation": "CF_NAME enable-feature-flag FEATURE_NAME",
+      "modified": false
+   },
+   {
       "id": "CF_NAME env APP",
       "translation": "CF_NAME env APP",
       "modified": false
@@ -637,6 +647,16 @@
    {
       "id": "CF_NAME events APP",
       "translation": "CF_NAME events APP",
+      "modified": false
+   },
+   {
+      "id": "CF_NAME feature-flag",
+      "translation": "CF_NAME feature-flag",
+      "modified": false
+   },
+   {
+      "id": "CF_NAME feature-flags",
+      "translation": "CF_NAME feature-flags",
       "modified": false
    },
    {
@@ -895,7 +915,7 @@
       "modified": false
    },
    {
-      "id": "CF_NAME update-service-broker SERVICE_BROKER [-u USERNAME] [-p PASSWORD] [--url URL]",
+      "id": "CF_NAME update-service-broker SERVICE_BROKER USERNAME PASSWORD URL",
       "translation": "CF_NAME update-service-broker SERVICE_BROKER USERNAME PASSWORD URL",
       "modified": true
    },
@@ -1405,6 +1425,11 @@
       "modified": false
    },
    {
+      "id": "Disable the use of a feature so that users have access to and can use the feature.",
+      "translation": "Disable the use of a feature so that users have access to and can use the feature.",
+      "modified": false
+   },
+   {
       "id": "Disabling access of plan {{.PlanName}} for service {{.ServiceName}} as {{.Username}}...",
       "translation": "Disabling access of plan {{.PlanName}} for service {{.ServiceName}} as {{.Username}}...",
       "modified": false
@@ -1512,6 +1537,11 @@
    {
       "id": "Enable the buildpack",
       "translation": "Enable the buildpack",
+      "modified": false
+   },
+   {
+      "id": "Enable the use of a feature so that users have access to and can use the feature.",
+      "translation": "Enable the use of a feature so that users have access to and can use the feature.",
       "modified": false
    },
    {
@@ -1765,6 +1795,11 @@
       "modified": false
    },
    {
+      "id": "FEATURE FLAGS",
+      "translation": "FEATURE FLAGS",
+      "modified": false
+   },
+   {
       "id": "Failed fetching buildpacks.\n{{.Error}}",
       "translation": "Failed fetching buildpacks.\n{{.Error}}",
       "modified": false
@@ -1822,6 +1857,21 @@
    {
       "id": "Failed to start oauth request",
       "translation": "Failed to start oauth request",
+      "modified": false
+   },
+   {
+      "id": "Feature {{.FeatureFlag}} Disabled.",
+      "translation": "Feature {{.FeatureFlag}} Disabled.",
+      "modified": false
+   },
+   {
+      "id": "Feature {{.FeatureFlag}} Enabled.",
+      "translation": "Feature {{.FeatureFlag}} Enabled.",
+      "modified": false
+   },
+   {
+      "id": "Features",
+      "translation": "Features",
       "modified": false
    },
    {
@@ -2285,8 +2335,8 @@
       "modified": false
    },
    {
-      "id": "Maximum amount of memory an application instance can have(e.g. 1024M, 1G, 10G)",
-      "translation": "Maximum amount of memory an application instance can have(e.g. 1024M, 1G, 10G)",
+      "id": "Maximum amount of memory an application instance can have (e.g. 1024M, 1G, 10G). -1 represents an unlimited amount.",
+      "translation": "Maximum amount of memory an application instance can have (e.g. 1024M, 1G, 10G). -1 represents an unlimited amount.",
       "modified": false
    },
    {
@@ -2645,6 +2695,11 @@
       "modified": false
    },
    {
+      "id": "Quota to assign to the newly created org (excluding this option results in assignment of default quota)",
+      "translation": "Quota to assign to the newly created org (excluding this option results in assignment of default quota)",
+      "modified": false
+   },
+   {
       "id": "Quota {{.QuotaName}} does not exist",
       "translation": "Quota {{.QuotaName}} does not exist",
       "modified": false
@@ -2825,6 +2880,26 @@
       "modified": false
    },
    {
+      "id": "Retrieve an individual feature flag with status",
+      "translation": "Retrieve an individual feature flag with status",
+      "modified": false
+   },
+   {
+      "id": "Retrieve list of feature flags with status of each flag-able feature",
+      "translation": "Retrieve list of feature flags with status of each flag-able feature",
+      "modified": false
+   },
+   {
+      "id": "Retrieving status of all flagged features as {{.Username}}...",
+      "translation": "Retrieving status of all flagged features as {{.Username}}...",
+      "modified": false
+   },
+   {
+      "id": "Retrieving status of {{.FeatureFlag}} as {{.Username}}...",
+      "translation": "Retrieving status of {{.FeatureFlag}} as {{.Username}}...",
+      "modified": false
+   },
+   {
       "id": "Route {{.URL}} already exists",
       "translation": "Route {{.URL}} already exists",
       "modified": false
@@ -2990,6 +3065,11 @@
       "modified": false
    },
    {
+      "id": "Setting status of {{.FeatureFlag}} as {{.Username}}...",
+      "translation": "Setting status of {{.FeatureFlag}} as {{.Username}}...",
+      "modified": false
+   },
+   {
       "id": "Show a single security group",
       "translation": "Show a single security group",
       "modified": false
@@ -3112,6 +3192,11 @@
    {
       "id": "Startup command, set to null to reset to default start command",
       "translation": "Startup command, set to null to reset to default start command",
+      "modified": false
+   },
+   {
+      "id": "State",
+      "translation": "State",
       "modified": false
    },
    {
@@ -3272,11 +3357,6 @@
    {
       "id": "UAA endpoint missing from config file",
       "translation": "UAA endpoint missing from config file",
-      "modified": false
-   },
-   {
-      "id": "URL",
-      "translation": "URL",
       "modified": false
    },
    {

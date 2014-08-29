@@ -1,7 +1,11 @@
 package organization_test
 
 import (
-	testapi "github.com/cloudfoundry/cli/cf/api/fakes"
+	"github.com/cloudfoundry/cli/cf/errors"
+	"github.com/cloudfoundry/cli/cf/models"
+
+	test_org "github.com/cloudfoundry/cli/cf/api/organizations/fakes"
+	test_quota "github.com/cloudfoundry/cli/cf/api/quotas/fakes"
 	"github.com/cloudfoundry/cli/cf/configuration"
 	testcmd "github.com/cloudfoundry/cli/testhelpers/commands"
 	testconfig "github.com/cloudfoundry/cli/testhelpers/configuration"
@@ -19,18 +23,20 @@ var _ = Describe("create-org command", func() {
 		config              configuration.ReadWriter
 		ui                  *testterm.FakeUI
 		requirementsFactory *testreq.FakeReqFactory
-		orgRepo             *testapi.FakeOrgRepository
+		orgRepo             *test_org.FakeOrganizationRepository
+		quotaRepo           *test_quota.FakeQuotaRepository
 	)
 
 	BeforeEach(func() {
 		ui = &testterm.FakeUI{}
 		config = testconfig.NewRepositoryWithDefaults()
 		requirementsFactory = &testreq.FakeReqFactory{}
-		orgRepo = &testapi.FakeOrgRepository{}
+		orgRepo = &test_org.FakeOrganizationRepository{}
+		quotaRepo = &test_quota.FakeQuotaRepository{}
 	})
 
 	runCommand := func(args ...string) {
-		testcmd.RunCommand(NewCreateOrg(ui, config, orgRepo), args, requirementsFactory)
+		testcmd.RunCommand(NewCreateOrg(ui, config, orgRepo, quotaRepo), args, requirementsFactory)
 	}
 
 	Describe("requirements", func() {
@@ -48,6 +54,7 @@ var _ = Describe("create-org command", func() {
 
 	Context("when logged in and provided the name of an org to create", func() {
 		BeforeEach(func() {
+			orgRepo.CreateReturns(nil)
 			requirementsFactory.LoginSuccess = true
 		})
 
@@ -58,11 +65,12 @@ var _ = Describe("create-org command", func() {
 				[]string{"Creating org", "my-org", "my-user"},
 				[]string{"OK"},
 			))
-			Expect(orgRepo.CreateName).To(Equal("my-org"))
+			Expect(orgRepo.CreateArgsForCall(0).Name).To(Equal("my-org"))
 		})
 
 		It("fails and warns the user when the org already exists", func() {
-			orgRepo.CreateOrgExists = true
+			err := errors.NewHttpError(400, errors.ORG_EXISTS, "org already exists")
+			orgRepo.CreateReturns(err)
 			runCommand("my-org")
 
 			Expect(ui.Outputs).To(ContainSubstrings(
@@ -70,6 +78,41 @@ var _ = Describe("create-org command", func() {
 				[]string{"OK"},
 				[]string{"my-org", "already exists"},
 			))
+		})
+
+		Context("when allowing a non-defualt quota", func() {
+			var (
+				quota models.QuotaFields
+			)
+
+			BeforeEach(func() {
+				quota = models.QuotaFields{
+					Name: "non-default-quota",
+					Guid: "non-default-quota-guid",
+				}
+			})
+
+			It("creates an org with a non-default quota", func() {
+				quotaRepo.FindByNameReturns(quota, nil)
+				runCommand("-q", "non-default-quota", "my-org")
+
+				Expect(quotaRepo.FindByNameArgsForCall(0)).To(Equal("non-default-quota"))
+				Expect(orgRepo.CreateArgsForCall(0).QuotaDefinition.Guid).To(Equal("non-default-quota-guid"))
+				Expect(ui.Outputs).To(ContainSubstrings(
+					[]string{"Creating org", "my-org"},
+					[]string{"OK"},
+				))
+			})
+
+			It("fails and warns the user when the quota cannot be found", func() {
+				quotaRepo.FindByNameReturns(models.QuotaFields{}, errors.New("Could not find quota"))
+				runCommand("-q", "non-default-quota", "my-org")
+
+				Expect(ui.Outputs).To(ContainSubstrings(
+					[]string{"Creating org", "my-org"},
+					[]string{"Could not find quota"},
+				))
+			})
 		})
 	})
 })

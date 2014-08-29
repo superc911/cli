@@ -1,4 +1,4 @@
-package api_test
+package organizations_test
 
 import (
 	"net/http"
@@ -12,7 +12,7 @@ import (
 	testconfig "github.com/cloudfoundry/cli/testhelpers/configuration"
 	testnet "github.com/cloudfoundry/cli/testhelpers/net"
 
-	. "github.com/cloudfoundry/cli/cf/api"
+	. "github.com/cloudfoundry/cli/cf/api/organizations"
 	. "github.com/cloudfoundry/cli/testhelpers/matchers"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -53,10 +53,7 @@ var _ = Describe("Organization Repository", func() {
 			defer testserver.Close()
 
 			orgs := []models.Organization{}
-			apiErr := repo.ListOrgs(func(o models.Organization) bool {
-				orgs = append(orgs, o)
-				return true
-			})
+			orgs, apiErr := repo.ListOrgs()
 
 			Expect(len(orgs)).To(Equal(3))
 			Expect(orgs[0].Guid).To(Equal("org1-guid"))
@@ -76,13 +73,8 @@ var _ = Describe("Organization Repository", func() {
 			testserver, handler, repo := createOrganizationRepo(emptyOrgsRequest)
 			defer testserver.Close()
 
-			wasCalled := false
-			apiErr := repo.ListOrgs(func(o models.Organization) bool {
-				wasCalled = true
-				return false
-			})
+			_, apiErr := repo.ListOrgs()
 
-			Expect(wasCalled).To(BeFalse())
 			Expect(apiErr).NotTo(HaveOccurred())
 			Expect(handler).To(HaveAllRequestsCalled())
 		})
@@ -169,19 +161,48 @@ var _ = Describe("Organization Repository", func() {
 		})
 	})
 
-	Describe("creating organizations", func() {
+	Describe(".Create", func() {
 		It("creates the org", func() {
+			org := models.Organization{
+				OrganizationFields: models.OrganizationFields{
+					Name: "my-org",
+				}}
+
 			req := testapi.NewCloudControllerTestRequest(testnet.TestRequest{
 				Method:   "POST",
 				Path:     "/v2/organizations",
-				Matcher:  testnet.RequestBodyMatcher(`{"name":"my-org"}`),
+				Matcher:  testnet.RequestBodyMatcher(`{"name":"my-org", "quota_definition_guid":""}`),
 				Response: testnet.TestResponse{Status: http.StatusCreated},
 			})
 
 			testserver, handler, repo := createOrganizationRepo(req)
 			defer testserver.Close()
 
-			apiErr := repo.Create("my-org")
+			apiErr := repo.Create(org)
+			Expect(handler).To(HaveAllRequestsCalled())
+			Expect(apiErr).NotTo(HaveOccurred())
+		})
+
+		It("creates the org with the provided quota", func() {
+			org := models.Organization{
+				OrganizationFields: models.OrganizationFields{
+					Name: "my-org",
+					QuotaDefinition: models.QuotaFields{
+						Guid: "my-quota-guid",
+					},
+				}}
+
+			req := testapi.NewCloudControllerTestRequest(testnet.TestRequest{
+				Method:   "POST",
+				Path:     "/v2/organizations",
+				Matcher:  testnet.RequestBodyMatcher(`{"name":"my-org", "quota_definition_guid":"my-quota-guid"}`),
+				Response: testnet.TestResponse{Status: http.StatusCreated},
+			})
+
+			testserver, handler, repo := createOrganizationRepo(req)
+			defer testserver.Close()
+
+			apiErr := repo.Create(org)
 			Expect(handler).To(HaveAllRequestsCalled())
 			Expect(apiErr).NotTo(HaveOccurred())
 		})

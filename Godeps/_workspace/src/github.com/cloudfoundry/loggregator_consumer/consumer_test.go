@@ -7,6 +7,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	consumer "github.com/cloudfoundry/loggregator_consumer"
+	"github.com/cloudfoundry/loggregator_consumer/noaa_errors"
 	"github.com/cloudfoundry/loggregatorlib/logmessage"
 	"github.com/cloudfoundry/loggregatorlib/server/handlers"
 	. "github.com/onsi/ginkgo"
@@ -252,7 +253,7 @@ var _ = Describe("Loggregator Consumer", func() {
 
 					Expect(err).To(HaveOccurred())
 					Expect(err.Error()).To(ContainSubstring("You are not authorized. Helpful message"))
-					Expect(err).To(BeAssignableToTypeOf(&consumer.UnauthorizedError{}))
+					Expect(err).To(BeAssignableToTypeOf(&noaa_errors.UnauthorizedError{}))
 				})
 			})
 		})
@@ -467,7 +468,7 @@ var _ = Describe("Loggregator Consumer", func() {
 
 				Expect(recentError).To(HaveOccurred())
 				Expect(recentError.Error()).To(ContainSubstring("You are not authorized. Helpful message"))
-				Expect(recentError).To(BeAssignableToTypeOf(&consumer.UnauthorizedError{}))
+				Expect(recentError).To(BeAssignableToTypeOf(&noaa_errors.UnauthorizedError{}))
 			})
 		})
 	})

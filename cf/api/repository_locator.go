@@ -2,9 +2,11 @@ package api
 
 import (
 	"crypto/tls"
+	"github.com/cloudfoundry/cli/cf/api/organizations"
 	"net/http"
 
 	"github.com/cloudfoundry/cli/cf/api/authentication"
+	"github.com/cloudfoundry/cli/cf/api/feature_flags"
 	"github.com/cloudfoundry/cli/cf/api/quotas"
 	"github.com/cloudfoundry/cli/cf/api/security_groups"
 	"github.com/cloudfoundry/cli/cf/api/security_groups/defaults/running"
@@ -25,7 +27,7 @@ type RepositoryLocator struct {
 	authRepo                        authentication.AuthenticationRepository
 	curlRepo                        CurlRepository
 	endpointRepo                    RemoteEndpointRepository
-	organizationRepo                CloudControllerOrganizationRepository
+	organizationRepo                organizations.CloudControllerOrganizationRepository
 	quotaRepo                       quotas.CloudControllerQuotaRepository
 	spaceRepo                       spaces.CloudControllerSpaceRepository
 	appRepo                         CloudControllerApplicationRepository
@@ -55,6 +57,7 @@ type RepositoryLocator struct {
 	runningSecurityGroupRepo        running.RunningSecurityGroupsRepo
 	securityGroupSpaceBinder        securitygroupspaces.SecurityGroupSpaceBinder
 	spaceQuotaRepo                  space_quotas.SpaceQuotaRepository
+	featureFlagRepo                 feature_flags.FeatureFlagRepository
 }
 
 func NewRepositoryLocator(config configuration.ReadWriter, gatewaysByName map[string]net.Gateway) (loc RepositoryLocator) {
@@ -84,7 +87,7 @@ func NewRepositoryLocator(config configuration.ReadWriter, gatewaysByName map[st
 	loc.domainRepo = NewCloudControllerDomainRepository(config, cloudControllerGateway, strategy)
 	loc.endpointRepo = NewEndpointRepository(config, cloudControllerGateway)
 	loc.logsRepo = NewLoggregatorLogsRepository(config, loggregatorConsumer, loc.authRepo)
-	loc.organizationRepo = NewCloudControllerOrganizationRepository(config, cloudControllerGateway)
+	loc.organizationRepo = organizations.NewCloudControllerOrganizationRepository(config, cloudControllerGateway)
 	loc.passwordRepo = NewCloudControllerPasswordRepository(config, uaaGateway)
 	loc.quotaRepo = quotas.NewCloudControllerQuotaRepository(config, cloudControllerGateway)
 	loc.routeRepo = NewCloudControllerRouteRepository(config, cloudControllerGateway)
@@ -105,6 +108,7 @@ func NewRepositoryLocator(config configuration.ReadWriter, gatewaysByName map[st
 	loc.runningSecurityGroupRepo = running.NewRunningSecurityGroupsRepo(config, cloudControllerGateway)
 	loc.securityGroupSpaceBinder = securitygroupspaces.NewSecurityGroupSpaceBinder(config, cloudControllerGateway)
 	loc.spaceQuotaRepo = space_quotas.NewCloudControllerSpaceQuotaRepository(config, cloudControllerGateway)
+	loc.featureFlagRepo = feature_flags.NewCloudControllerFeatureFlagRepository(config, cloudControllerGateway)
 	return
 }
 
@@ -120,7 +124,7 @@ func (locator RepositoryLocator) GetEndpointRepository() EndpointRepository {
 	return locator.endpointRepo
 }
 
-func (locator RepositoryLocator) GetOrganizationRepository() OrganizationRepository {
+func (locator RepositoryLocator) GetOrganizationRepository() organizations.OrganizationRepository {
 	return locator.organizationRepo
 }
 
@@ -238,4 +242,8 @@ func (locator RepositoryLocator) GetServicePlanVisibilityRepository() ServicePla
 
 func (locator RepositoryLocator) GetSpaceQuotaRepository() space_quotas.SpaceQuotaRepository {
 	return locator.spaceQuotaRepo
+}
+
+func (locator RepositoryLocator) GetFeatureFlagRepository() feature_flags.FeatureFlagRepository {
+	return locator.featureFlagRepo
 }

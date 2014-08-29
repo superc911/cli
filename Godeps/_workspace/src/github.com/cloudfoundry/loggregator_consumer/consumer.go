@@ -9,6 +9,7 @@ import (
 	"crypto/tls"
 	"errors"
 	"fmt"
+	"github.com/cloudfoundry/loggregator_consumer/noaa_errors"
 	"github.com/cloudfoundry/loggregatorlib/logmessage"
 	"github.com/gorilla/websocket"
 	"io/ioutil"
@@ -167,7 +168,7 @@ func (cnsmr *consumer) httpRecent(appGuid string, authToken string) ([]*logmessa
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusUnauthorized {
 		data, _ := ioutil.ReadAll(resp.Body)
-		return nil, NewUnauthorizedError(string(data))
+		return nil, noaa_errors.NewUnauthorizedError(string(data))
 	}
 
 	if resp.StatusCode == http.StatusBadRequest {
@@ -334,22 +335,22 @@ func (cnsmr *consumer) establishWebsocketConnection(path string, authToken strin
 	url := cnsmr.endpoint + path
 
 	cnsmr.debugPrinter.Print("WEBSOCKET REQUEST:",
-		"GET " + path + " HTTP/1.1\n" +
-		"Host: " + cnsmr.endpoint + "\n" +
-		"Upgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Version: 13\nSec-WebSocket-Key: [HIDDEN]\n" +
-		headersString(header))
+		"GET "+path+" HTTP/1.1\n"+
+			"Host: "+cnsmr.endpoint+"\n"+
+			"Upgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Version: 13\nSec-WebSocket-Key: [HIDDEN]\n"+
+			headersString(header))
 
 	ws, resp, err := dialer.Dial(url, header)
 
 	if resp != nil {
 		cnsmr.debugPrinter.Print("WEBSOCKET RESPONSE:",
-			resp.Proto + " " + resp.Status + "\n" +
-			headersString(resp.Header))
+			resp.Proto+" "+resp.Status+"\n"+
+				headersString(resp.Header))
 	}
 
 	if resp != nil && resp.StatusCode == http.StatusUnauthorized {
 		bodyData, _ := ioutil.ReadAll(resp.Body)
-		err = NewUnauthorizedError(string(bodyData))
+		err = noaa_errors.NewUnauthorizedError(string(bodyData))
 		return ws, err
 	}
 

@@ -1,20 +1,21 @@
-package api
+package organizations
 
 import (
 	"fmt"
+	"net/url"
+	"strings"
+
 	"github.com/cloudfoundry/cli/cf/api/resources"
 	"github.com/cloudfoundry/cli/cf/configuration"
 	"github.com/cloudfoundry/cli/cf/errors"
 	"github.com/cloudfoundry/cli/cf/models"
 	"github.com/cloudfoundry/cli/cf/net"
-	"net/url"
-	"strings"
 )
 
 type OrganizationRepository interface {
-	ListOrgs(func(models.Organization) bool) (apiErr error)
+	ListOrgs() (orgs []models.Organization, apiErr error)
 	FindByName(name string) (org models.Organization, apiErr error)
-	Create(name string) (apiErr error)
+	Create(org models.Organization) (apiErr error)
 	Rename(orgGuid string, name string) (apiErr error)
 	Delete(orgGuid string) (apiErr error)
 }
@@ -30,14 +31,22 @@ func NewCloudControllerOrganizationRepository(config configuration.Reader, gatew
 	return
 }
 
-func (repo CloudControllerOrganizationRepository) ListOrgs(cb func(models.Organization) bool) (apiErr error) {
-	return repo.gateway.ListPaginatedResources(
+func (repo CloudControllerOrganizationRepository) ListOrgs() ([]models.Organization, error) {
+	orgs := []models.Organization{}
+	err := repo.gateway.ListPaginatedResources(
 		repo.config.ApiEndpoint(),
 		"/v2/organizations",
 		resources.OrganizationResource{},
 		func(resource interface{}) bool {
-			return cb(resource.(resources.OrganizationResource).ToModel())
+			orgResource, ok := resource.(resources.OrganizationResource)
+			if ok {
+				orgs = append(orgs, orgResource.ToModel())
+				return true
+			} else {
+				return false
+			}
 		})
+	return orgs, err
 }
 
 func (repo CloudControllerOrganizationRepository) FindByName(name string) (org models.Organization, apiErr error) {
@@ -59,9 +68,9 @@ func (repo CloudControllerOrganizationRepository) FindByName(name string) (org m
 	return
 }
 
-func (repo CloudControllerOrganizationRepository) Create(name string) (apiErr error) {
+func (repo CloudControllerOrganizationRepository) Create(org models.Organization) (apiErr error) {
 	url := repo.config.ApiEndpoint() + "/v2/organizations"
-	data := fmt.Sprintf(`{"name":"%s"}`, name)
+	data := fmt.Sprintf(`{"name":"%s", "quota_definition_guid":"%s"}`, org.Name, org.QuotaDefinition.Guid)
 	return repo.gateway.CreateResource(url, strings.NewReader(data))
 }
 

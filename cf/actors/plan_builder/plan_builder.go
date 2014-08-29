@@ -2,6 +2,7 @@ package plan_builder
 
 import (
 	"github.com/cloudfoundry/cli/cf/api"
+	"github.com/cloudfoundry/cli/cf/api/organizations"
 	"github.com/cloudfoundry/cli/cf/models"
 )
 
@@ -19,10 +20,10 @@ var (
 type Builder struct {
 	servicePlanRepo           api.ServicePlanRepository
 	servicePlanVisibilityRepo api.ServicePlanVisibilityRepository
-	orgRepo                   api.OrganizationRepository
+	orgRepo                   organizations.OrganizationRepository
 }
 
-func NewBuilder(plan api.ServicePlanRepository, vis api.ServicePlanVisibilityRepository, org api.OrganizationRepository) Builder {
+func NewBuilder(plan api.ServicePlanRepository, vis api.ServicePlanVisibilityRepository, org organizations.OrganizationRepository) Builder {
 	return Builder{
 		servicePlanRepo:           plan,
 		servicePlanVisibilityRepo: vis,
@@ -94,10 +95,14 @@ func (builder Builder) buildPlanToOrgsVisibilityMap() (map[string][]string, erro
 	// Since this map doesn't ever change, we memoize it for performance
 	if PlanToOrgsVisibilityMap == nil {
 		orgLookup := make(map[string]string)
-		builder.orgRepo.ListOrgs(func(org models.Organization) bool {
+
+		orgs, err := builder.orgRepo.ListOrgs()
+		if err != nil {
+			return nil, err
+		}
+		for _, org := range orgs {
 			orgLookup[org.Guid] = org.Name
-			return true
-		})
+		}
 
 		visibilities, err := builder.servicePlanVisibilityRepo.List()
 		if err != nil {

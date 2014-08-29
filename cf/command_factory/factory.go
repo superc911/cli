@@ -16,6 +16,7 @@ import (
 	"github.com/cloudfoundry/cli/cf/commands/application"
 	"github.com/cloudfoundry/cli/cf/commands/buildpack"
 	"github.com/cloudfoundry/cli/cf/commands/domain"
+	"github.com/cloudfoundry/cli/cf/commands/featureflag"
 	"github.com/cloudfoundry/cli/cf/commands/organization"
 	"github.com/cloudfoundry/cli/cf/commands/quota"
 	"github.com/cloudfoundry/cli/cf/commands/route"
@@ -52,7 +53,7 @@ func NewFactory(ui terminal.UI, config configuration.ReadWriter, manifestRepo ma
 	factory.cmdsByName["config"] = commands.NewConfig(ui, config)
 	factory.cmdsByName["create-buildpack"] = buildpack.NewCreateBuildpack(ui, repoLocator.GetBuildpackRepository(), repoLocator.GetBuildpackBitsRepository())
 	factory.cmdsByName["create-domain"] = domain.NewCreateDomain(ui, config, repoLocator.GetDomainRepository())
-	factory.cmdsByName["create-org"] = organization.NewCreateOrg(ui, config, repoLocator.GetOrganizationRepository())
+	factory.cmdsByName["create-org"] = organization.NewCreateOrg(ui, config, repoLocator.GetOrganizationRepository(), repoLocator.GetQuotaRepository())
 	factory.cmdsByName["create-service"] = service.NewCreateService(ui, config, repoLocator.GetServiceRepository())
 	factory.cmdsByName["create-service-auth-token"] = serviceauthtoken.NewCreateServiceAuthToken(ui, config, repoLocator.GetServiceAuthTokenRepository())
 	factory.cmdsByName["create-service-broker"] = servicebroker.NewCreateServiceBroker(ui, config, repoLocator.GetServiceBrokerRepository())
@@ -250,6 +251,10 @@ func NewFactory(ui terminal.UI, config configuration.ReadWriter, manifestRepo ma
 	factory.cmdsByName["update-space-quota"] = spacequota.NewUpdateSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository())
 	factory.cmdsByName["set-space-quota"] = spacequota.NewSetSpaceQuota(ui, config, repoLocator.GetSpaceRepository(), repoLocator.GetSpaceQuotaRepository())
 	factory.cmdsByName["unset-space-quota"] = spacequota.NewUnsetSpaceQuota(ui, config, repoLocator.GetSpaceQuotaRepository(), repoLocator.GetSpaceRepository())
+	factory.cmdsByName["feature-flags"] = featureflag.NewListFeatureFlags(ui, config, repoLocator.GetFeatureFlagRepository())
+	factory.cmdsByName["feature-flag"] = featureflag.NewShowFeatureFlag(ui, config, repoLocator.GetFeatureFlagRepository())
+	factory.cmdsByName["enable-feature-flag"] = featureflag.NewEnableFeatureFlag(ui, config, repoLocator.GetFeatureFlagRepository())
+	factory.cmdsByName["disable-feature-flag"] = featureflag.NewDisableFeatureFlag(ui, config, repoLocator.GetFeatureFlagRepository())
 
 	return
 }
